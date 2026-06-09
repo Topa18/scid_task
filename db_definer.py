@@ -1,13 +1,17 @@
 from mysql.connector import connect, Error
-
+from sqlalchemy.orm import Session
+from sqlalchemy import create_engine, inspect
+from models import Base
 
 class DbDefiner():
     """
-    Настройка и инициализация баз данных и пользователя.
+    Объект - инциализатор схемы БД, пользователя и таблиц в БД.
 
     Args:
-        config (dict): Параметры подключения к БД с root доступом
-                       (host, user, password).
+        config (dict): Параметры подключения к БД с root доступом\n
+                       {'host': host,\n
+                        'user': user,\n
+                        'password': password}.
         db_name (str): Имя основной базы данных.
         dev_db_name (str): Имя тестовой базы данных.
         db_user (str): Имя пользователя для доступа к БД.
@@ -24,6 +28,9 @@ class DbDefiner():
         self.db_password = db_password
         
     def create_schema_and_user(self):
+        """
+        Настройка и инициализация баз данных и пользователя.
+        """
         try:
             with connect(**self.config) as connection:
                 with connection.cursor() as cursor:
@@ -45,3 +52,54 @@ class DbDefiner():
                     print(connection)
         except Error as e:
             print(f'Error occured: {e}')
+
+
+    def create_tables(self, connection_str:str):
+        """
+        Создание таблиц, если они не были созданы ранее.
+        В ином случае None
+
+        Args:
+            connection_str (str): Строка соединения с БД
+        """
+        engine = create_engine(connection_str, echo=True)
+        inspector = inspect(engine)
+        tables = inspector.get_table_names()
+        if not tables:
+            Base.metadata.create_all(bind=engine)
+            print("Таблицы созданы")
+        else:
+            print("Таблицы уже были созданы")
+
+
+    def drop(self, connection_str):
+        """
+        Удаление всех таблиц с данными.
+
+        Args:
+            connection_str (str): Строка соединения с БД
+        """
+        engine = create_engine(connection_str, echo=True)
+        Base.metadata.drop_all(bind=engine)
+
+
+    def insert_data(self, connection_str:str, data:Base):
+        """
+        Вставка заготовленных данных для работы с БД.
+
+        Args:
+            connection_str (str): Строка соединения с БД
+            data (Base): Объект или последовательность объектов, соответсвующих моделям в models.py
+        """
+        engine = create_engine(connection_str, echo=True)
+        session = Session(engine)
+
+        # Наполняем БД данными
+        try:
+            with session as s:
+                s.add(data)
+                s.commit()
+                print(f'Данные добавлены: {data}')
+        except Exception as e:
+            print(f'Error occured: {e}')
+
