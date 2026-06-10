@@ -11,14 +11,13 @@ CONFIG = {
           }
 
 DB_NAME = os.getenv('DB_NAME')
-DEV_DB_NAME = os.getenv('DEV_DB_NAME')
 DB_USER = os.getenv('DB_USER')
 DB_PASSWORD = os.getenv('DB_PASSWORD')
 
 CONN_STR = f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{CONFIG.get('host')}/{DB_NAME}"
-DEV_CONN_STR = f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{CONFIG.get('host')}/{DEV_DB_NAME}"
 
 
+# Данные для наполнения БД
 frst_user = User(id=1, name='Ivan')
 sec_user = User(id=2, name='Alexey')
 trhd_user = User(id=3, name='Vasya')

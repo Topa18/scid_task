@@ -5,7 +5,7 @@ from sqlalchemy import pool
 
 from alembic import context
 
-from config import CONN_STR, DEV_CONN_STR
+from config import CONN_STR
 from models import *
 
 # this is the Alembic Config object, which provides

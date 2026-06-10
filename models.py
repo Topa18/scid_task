@@ -23,7 +23,6 @@ class Address(Base):
     user_id: Mapped['User'] = mapped_column(ForeignKey('user.id'))
     city: Mapped[str] = mapped_column(String(30), nullable=True)
     email_address: Mapped[str] = mapped_column(String(50), nullable=True)
-    street: Mapped[str] = mapped_column(String(20), nullable=True)
 
     def __repr__(self):
         return f'Город: {self.city}'
@@ -34,7 +33,8 @@ class Category(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(30))
-
+    description: Mapped[str] = mapped_column(Text(300))
+    
     def __repr__(self):
         return f'Название: {self.name}'
     
