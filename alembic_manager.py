@@ -11,6 +11,16 @@ import logging
 
 
 class AlembicManager:
+    """
+    Класс для управления миграциями БД
+
+    Args:
+        alembic_ini_path (str): Путь к alembic.ini.
+        migrations_dir (str): Путь к папке migrations.
+        db_url (str): Строка подключения к БД.
+        logger (logging.Logger): По умолчанию logging.Logger.
+    """
+
     def __init__(self,
                  alembic_ini_path: str = 'alembic.ini',
                  migrations_dir: str = 'migrations',
