@@ -1,13 +1,5 @@
-from sqlalchemy import create_engine
-from sqlalchemy import String, Integer, Text, Float, ForeignKey
-from sqlalchemy.orm import Session
+from sqlalchemy import String, Text, Float, ForeignKey
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
-
-# from config import CONN_STR, DEV_CONN_STR
-
-
-# main_engine = create_engine(CONN_STR, echo=True)
-# test_engine = create_engine(DEV_CONN_STR, echo=True)
 
 
 class Base(DeclarativeBase):
@@ -31,6 +23,7 @@ class Address(Base):
     user_id: Mapped['User'] = mapped_column(ForeignKey('user.id'))
     city: Mapped[str] = mapped_column(String(30), nullable=True)
     email_address: Mapped[str] = mapped_column(String(50), nullable=True)
+    street: Mapped[str] = mapped_column(String(20), nullable=True)
 
     def __repr__(self):
         return f'Город: {self.city}'

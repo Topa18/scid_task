@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from models import Base, User, Address, Item, Category
+from models import User, Address, Item, Category
 
 load_dotenv()
 

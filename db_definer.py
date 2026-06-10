@@ -3,7 +3,8 @@ from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, inspect
 from models import Base
 
-class DbDefiner():
+
+class DbDefiner:
     """
     Объект - инциализатор схемы БД, пользователя и таблиц в БД.
 
@@ -53,7 +54,6 @@ class DbDefiner():
         except Error as e:
             print(f'Error occured: {e}')
 
-
     def create_tables(self, connection_str:str):
         """
         Создание таблиц, если они не были созданы ранее.
@@ -71,7 +71,6 @@ class DbDefiner():
         else:
             print("Таблицы уже были созданы")
 
-
     def drop(self, connection_str):
         """
         Удаление всех таблиц с данными.
@@ -81,7 +80,6 @@ class DbDefiner():
         """
         engine = create_engine(connection_str, echo=True)
         Base.metadata.drop_all(bind=engine)
-
 
     def insert_data(self, connection_str:str, data:Base):
         """
