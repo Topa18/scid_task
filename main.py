@@ -8,8 +8,7 @@ def main():
 
     manager = AlembicManager(db_url=CONN_STR)
     manager.init_alembic()
-    manager.create_migration('test', autogenerate=True)
-    manager.upgrade()
+    manager.create_and_apply_migration('test', autogenerate=True)
 
     # drop_db()
 
