@@ -20,5 +20,5 @@ def prep_db():
 
 #Для теста
 def drop_db():
-    definer = DbDefiner(CONFIG, DB_NAME, DB_PASSWORD)
+    definer = DbDefiner(CONFIG, DB_NAME, DB_USER, DB_PASSWORD)
     definer.drop(CONN_STR)

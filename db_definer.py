@@ -2,8 +2,6 @@ from mysql.connector import connect, Error
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, inspect
 from models import Base
-from typing import Optional
-import logging
 
 
 class DbDefiner:
@@ -21,14 +19,12 @@ class DbDefiner:
     """
 
     def __init__(self, config:dict, db_name:str,
-                 db_user:str, db_password:str,
-                 logger: Optional[logging.Logger] = None):
+                 db_user:str, db_password:str):
         self.config = config
         self.host = config.get('host')
         self.db_name = db_name
         self.db_user = db_user
         self.db_password = db_password
-        self.logger = logger or logging.getLogger(__name__)
         
         
     def create_schema_and_user(self):
@@ -48,10 +44,10 @@ class DbDefiner:
                                    f'TO \'{self.db_user}\'@\'{self.host}\'')
                     cursor.execute('FLUSH PRIVILEGES')
                     
-                    self.logger.info(f'База данных {self.db_name} подготовлена')
-                    self.logger.info(f'Пользователь \'{self.db_user}\'@\'{self.host}\' подготовлен')
+                    print(f'База данных {self.db_name} подготовлена')
+                    print(f'Пользователь \'{self.db_user}\'@\'{self.host}\' подготовлен')
         except Error as e:
-            self.logger.error(f'Error occured: {e}')
+            print(f'Error occured: {e}')
 
     def create_tables(self, connection_str:str):
         """
@@ -64,11 +60,16 @@ class DbDefiner:
         engine = create_engine(connection_str)
         inspector = inspect(engine)
         tables = inspector.get_table_names()
+
+        # В тестировании для правильной последующей проверки
+        if 'alembic_version' in tables:
+            tables.remove('alembic_version')
+
         if not tables:
             Base.metadata.create_all(bind=engine)
-            self.logger.info("Таблицы созданы")
+            print("Таблицы созданы")
         else:
-            self.logger.info("Таблицы уже были созданы")
+            print("Таблицы уже были созданы")
                                                         
     def drop(self, connection_str):
         """
@@ -96,7 +97,8 @@ class DbDefiner:
             with session as s:
                 s.add(data)
                 s.commit()
-                self.logger.info(f'Данные добавлены: {data}')
+                print(f'Данные добавлены: {data}')
         except Exception as e:
-            self.logger.error(f'Error occured: {e}')
+            print(f'Error occured: {e}\n'
+                   'Данные уже в таблице')
 

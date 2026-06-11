@@ -33,7 +33,6 @@ class Category(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(30))
-    description: Mapped[str] = mapped_column(Text(300))
     
     def __repr__(self):
         return f'Название: {self.name}'

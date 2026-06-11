@@ -4,7 +4,7 @@ from prepare_db import prep_db, drop_db
 
 
 def main():
-    prep_db()
+    # prep_db()
 
     manager = AlembicManager(db_url=CONN_STR)
     manager.init_alembic()
