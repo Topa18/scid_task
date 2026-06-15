@@ -2,7 +2,24 @@ import os
 from dotenv import load_dotenv
 from models import User, Address, Item, Category
 
+
 load_dotenv()
+
+reference_config = {
+    'host': os.getenv('REF_PG_HOST'),
+    'port': os.getenv('REF_PG_PORT'),
+    'database': os.getenv('REF_PG_DB'),
+    'user': os.getenv('REF_PG_USER'),
+    'password': os.getenv('REF_PG_PW')
+}
+
+target_config = {
+    'host': os.getenv('TRGT_PG_HOST'),
+    'port': os.getenv('TRGT_PG_PORT'),
+    'database': os.getenv('TRGT_PG_DB'),
+    'user': os.getenv('TRGT_PG_USER'),
+    'password': os.getenv('TRGT_PG_PW')
+}
 
 CONFIG = {
     'host': os.getenv('DB_HOST'),
